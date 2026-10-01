@@ -1,0 +1,61 @@
+// use prisma-8
+
+model Categories {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  habits Habits[]
+}
+
+enum Frequency {
+DIARY
+WEEKLY
+MONTHLY
+YEARLY
+}
+
+enum Weekday {
+MONDAY
+TUESDAY
+WEDNESDAY
+THURSDAY
+FRIDAY
+SATURDAY
+SUNDAY
+}
+
+
+model Habits {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  category_id Int
+  category Categories @relation(fields: [category_id], references:[id])
+  color String?
+  frequency Frequency
+  happens_every Weekday
+  points Int
+  checkins Checkins[]
+  rewards Rewards[]
+}
+
+model Checkins {
+  id        Int      @id @default(autoincrement())
+  habit_id Int
+  habit Habits @relation(fields: [habit_id], references: [id])
+  created_at DateTime @default(now())
+  current_streak Int @default(0)
+  max_streak Int @default(0)
+}
+
+model Rewards {
+  id        Int      @id @default(autoincrement())
+  name  String
+  description String?
+  points Int
+  claimed Boolean @default(false)
+  claimed_at DateTime?
+  habit_id Int
+  habit Habits @relation(fields: [habit_id], references: [id])
+}
+
+
+
