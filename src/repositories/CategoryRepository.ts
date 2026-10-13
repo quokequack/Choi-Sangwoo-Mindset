@@ -1,14 +1,20 @@
 import { db } from '../prisma/db';
+import {ICategoryRepository} from "../interfaces/ICategoryRepository";
+import {Category} from "../types/Category";
 
-export class CategoryRepository {
+export class CategoryRepository implements ICategoryRepository {
 
-    public async createCategory(name: string) {
+    async createCategory(name: string) : Promise<Category> {
         return db.orm.public.Categories.create({
             name,
         });
     }
 
-    public async getAll() {
+    async getAll() : Promise<Category[]> {
         return db.orm.public.Categories.all();
+    }
+
+    async getById(id: number) : Promise<Category | null> {
+        return db.orm.public.Categories.where({ id: id}).first();
     }
 }

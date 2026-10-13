@@ -1,6 +1,6 @@
 import {FrequencyEnum} from "./enum/FrequencyEnum";
 import {Request} from "express";
-import {ICreateHabit} from "./interfaces/ICreateHabit";
+import {IHabit} from "./interfaces/IHabit";
 export class HabitDTO {
 
     constructor(
@@ -11,7 +11,7 @@ export class HabitDTO {
         private happens_every: WeekdayEnum,
         private points: number) {}
 
-    static byRequest(data: Request) {
+    static byRequest(data: Request) : HabitDTO {
         return new HabitDTO(
             data.query.name as string,
             data.query.category_id as unknown as number,
@@ -22,7 +22,7 @@ export class HabitDTO {
         );
     }
 
-    toHabit() : ICreateHabit {
+    toHabit() : IHabit {
         return {
             name: this.name,
             category_id: this.category_id,

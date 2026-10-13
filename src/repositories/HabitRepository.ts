@@ -1,9 +1,11 @@
-import {ICreateHabit} from "../interfaces/ICreateHabit";
 import {db} from "../prisma/db";
+import {IHabit} from "../interfaces/IHabit";
+import {IHabitRepository} from "../interfaces/IHabitRepository";
+import {Habit} from "../types/Habit";
 
-export class HabitRepository {
+export class HabitRepository implements IHabitRepository {
 
-    async createHabit(data: ICreateHabit) {
+    async createHabit(data: IHabit): Promise<Habit> {
         return db.orm.public.Habits.create({
             name: data.name,
             category_id: data.category_id,
@@ -14,11 +16,11 @@ export class HabitRepository {
         });
     }
 
-    async getHabits() {
+    async getHabits(): Promise<Habit[]> {
         return db.orm.public.Habits.all();
     }
 
-    async getHabitById(id: number) {
-        return db.orm.public.Habits.where({ id: id });
+    async getHabitById(id: number): Promise<Habit | null> {
+        return db.orm.public.Habits.where({ id: id }).first();
     }
 }

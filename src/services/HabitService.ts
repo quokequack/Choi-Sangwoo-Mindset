@@ -2,16 +2,22 @@ import {HabitRepository} from "../repositories/HabitRepository";
 import {NullError} from "../error/NullError";
 import {HabitDTO} from "../HabitDTO";
 import {Request} from "express";
+import {Category} from "../types/Category";
+import {Habit} from "../types/Habit";
 
 export class HabitService {
 
     constructor(private readonly habitRepository: HabitRepository) {}
 
-    async getHabits(){
+    async getHabits() : Promise<Habit[]>{
         return this.habitRepository.getHabits();
     }
 
-    async createHabit(data: Request) {
+    async getById(id:number): Promise<Habit | null> {
+        return await this.habitRepository.getHabitById(id);
+    }
+
+    async createHabit(data: Request) : Promise<Habit> {
         if(!data.query.name === null
             || data.query.category_id === null
             || data.query.frequency === null

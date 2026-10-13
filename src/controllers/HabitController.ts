@@ -14,6 +14,25 @@ export class HabitController {
         }
     }
 
+    getAll = async (req: Request, res: Response)=> {
+        try{
+            const habits = await this.habitService.getHabits();
+            return res.status(200).json(habits);
+        } catch (error) {
+            return this.errorResponse(res, error);
+        }
+    }
+
+    getById = async (req: Request, res: Response) => {
+        try{
+            const id = Number(req.params.id);
+            const habit = await this.habitService.getById(id);
+            return res.status(200).json(habit);
+        } catch(error){
+            return this.errorResponse(res, error);
+        }
+    }
+
     private errorResponse = async (res: Response, error: unknown) =>{
         if (error instanceof NullError) {
             return res.status(error.statusCode).json({ erro: error.message});
